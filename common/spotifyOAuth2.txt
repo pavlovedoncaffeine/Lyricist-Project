@@ -1,0 +1,9 @@
+// Important C++ vcpkg and library documentation for future reference - pavlovedoncaffeine
+// vcpkg: https://github.com/microsoft/vcpkg/blob/master/README.md
+// cpprestsdk: https://github.com/microsoft/cpprestsdk/blob/master/README.md
+
+
+// To do:
+// 1. Create a spotify-lyricist authorization webpage (must be hosted on a server and reported to the spotify developer dashboard under Lyricist). 
+//      For dev work, it should be acceptable to use a localhost callback within the test python and cpp scripts.
+// 2. cpprestsdk Features:          HTTP client/server, JSON, URI, asynchronous streams, WebSockets client, oAuth
