@@ -24,13 +24,10 @@ class serverThread(threading.Thread):
         self.server = server
         threading.Thread.__init__(self)
 
-#    def startListening():
-#        return 0
-
 
 lyScope = 'user-read-playback-state'
 # Spotify OAuth2.0 to authorize the web API token systems
-spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET, redirect_uri=SPOTIFY_REDIRECT, state=None, scope=lyScope, username='dk_krypton', show_dialog=False))
+spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET, redirect_uri=SPOTIFY_REDIRECT, state=None, scope=lyScope, username='dk_krypton', show_dialog=True))
 
 # spawn second thread if required, to test server's redirect_uri and response codes beahviour
 httptestServer = spotipy.oauth2.start_local_http_server(8888)
@@ -38,5 +35,5 @@ httpTestServerThread = serverThread(httptestServer)
 httpTestServerThread.start()
 
 queryResult = spLyricist.current_user_playing_track()
-print("The result of the query:")
-print(queryResult)
+# print("The result of the query:")
+# print(queryResult)
