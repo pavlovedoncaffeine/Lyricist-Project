@@ -1,31 +1,42 @@
-# test script to correctly enable spotify OAuth2 functionality when looking up lyrics
-
-
-# environment variables/ path variables
-# Windows/UNIX
-# SET/export SPOTIPY_CLIENT_ID=7b45f66cbae54e518a9fb2e5717e6e6d
-# SET/export SPOTIPY_CLIENT_SECRET=108a6846a16f47b5ba15ef306775396c
-
-SPOTIFY_CLIENT_ID = '7b45f66cbae54e518a9fb2e5717e6e6d'
-SPOTIFY_CLIENT_SECRET = '108a6846a16f47b5ba15ef306775396c'
-SPOTIFY_REDIRECT = 'http://127.0.0.1:8080/'
-
-# GET https://api.spotify.com/v1/me/player/currently-playing
-
-
+#is_win = sys.platform.startswith('win')
+# Spotify Client Credentials Object Initialzation
+# spClientCred = spotipy.SpotifyClientCredentials(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)#, proxies=None, requests_session=True, requests_timeout=None)
 
 import sys
 import requests
 import spotipy
+import threading
 import json
-from spotipy.oauth2 import  SpotifyOAuth
+import six
 
-#is_win = sys.platform.startswith('win')
+from six.moves.BaseHTTPServer import HTTPServer
+from spotipy.oauth2 import  SpotifyOAuth
+from spotipy.oauth2 import *
+SPOTIFY_CLIENT_ID = '7b45f66cbae54e518a9fb2e5717e6e6d'
+SPOTIFY_CLIENT_SECRET = '108a6846a16f47b5ba15ef306775396c'
+SPOTIFY_REDIRECT = "http://localhost:8888/callback/"
+
+# Class to create a test HTTP server on a seperate thread
+# for oAuth2.0 response testing during dev.
+class serverThread(threading.Thread):
+
+    def __init__(self, server=None):
+        self.server = server
+        threading.Thread.__init__(self)
+
+#    def startListening():
+#        return 0
+
 
 lyScope = 'user-read-playback-state'
-spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT))
+# Spotify OAuth2.0 to authorize the web API token systems
+spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET, redirect_uri=SPOTIFY_REDIRECT, state=None, scope=lyScope, username='dk_krypton', show_dialog=False))
+
+# spawn second thread if required, to test server's redirect_uri and response codes beahviour
+httptestServer = spotipy.oauth2.start_local_http_server(8888)
+httpTestServerThread = serverThread(httptestServer)
+httpTestServerThread.start()
 
 queryResult = spLyricist.current_user_playing_track()
-
-for res in queryResult:
-    print(res)
+print("The result of the query:")
+print(queryResult)
