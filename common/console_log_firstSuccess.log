@@ -1,0 +1,206 @@
+#$PS 
+C:\Users\dkcac\Documents\Projects\Lyricist-Project> python .\common\pyThreadingTest.py
+Initializing...
+Fri Nov 13 00:01:01 2020 - Lyricist: Launching Spotify OAuth2.0 Service.
+Fri Nov 13 00:01:02 2020 - Lyricist: Spotify OAuth2.0 Server shutting down.
+
+{
+    "actions": {
+        "disallows": {      
+            "resuming": true
+        }
+    },
+    "context": {
+        "external_urls": {
+            "spotify": "https://open.spotify.com/playlist/3VtkJgYtpTIToWTIb7u41V"
+        },
+        "href": "https://api.spotify.com/v1/playlists/3VtkJgYtpTIToWTIb7u41V",
+        "type": "playlist",
+        "uri": "spotify:user:dk_krypton:playlist:3VtkJgYtpTIToWTIb7u41V"
+    },
+    "currently_playing_type": "track",
+    "is_playing": true,
+    "item": {
+        "album": {
+            "album_type": "single",
+            "artists": [
+                {
+                    "external_urls": {
+                        "spotify": "https://open.spotify.com/artist/7nn5NpdRkUM4QiqegMSmEo"
+                    },
+                    "href": "https://api.spotify.com/v1/artists/7nn5NpdRkUM4QiqegMSmEo",
+                    "id": "7nn5NpdRkUM4QiqegMSmEo",
+                    "name": "Raider",
+                    "type": "artist",
+                    "uri": "spotify:artist:7nn5NpdRkUM4QiqegMSmEo"
+                }
+            ],
+            "available_markets": [
+                "AD",
+                "AE",
+                "AL",
+                "AR",
+                "AT",
+                "AU",
+                "BA",
+                "BE",
+                "BG",
+                "BH",
+                "BO",
+                "BR",
+                "BY",
+                "CA",
+                "CH",
+                "CL",
+                "CO",
+                "CR",
+                "CY",
+                "CZ",
+                "DE",
+                "DK",
+                "DO",
+                "DZ",
+                "EC",
+                "EE",
+                "EG",
+                "ES",
+                "FI",
+                "FR",
+                "GB",
+                "GR",
+                "GT",
+                "HK",
+                "HN",
+                "HR",
+                "HU",
+                "ID",
+                "IE",
+                "IL",
+                "IN",
+                "IS",
+                "IT",
+                "JO",
+                "JP",
+                "KW",
+                "KZ",
+                "LB",
+                "LI",
+                "LT",
+                "LU",
+                "LV",
+                "MA",
+                "MC",
+                "MD",
+                "ME",
+                "MK",
+                "MT",
+                "MX",
+                "MY",
+                "NI",
+                "NL",
+                "NO",
+                "NZ",
+                "OM",
+                "PA",
+                "PE",
+                "PH",
+                "PL",
+                "PS",
+                "PT",
+                "PY",
+                "QA",
+                "RO",
+                "RS",
+                "RU",
+                "SA",
+                "SE",
+                "SG",
+                "SI",
+                "SK",
+                "SV",
+                "TH",
+                "TN",
+                "TR",
+                "TW",
+                "UA",
+                "US",
+                "UY",
+                "VN",
+                "XK",
+                "ZA"
+            ],
+            "external_urls": {
+                "spotify": "https://open.spotify.com/album/0DE8Ad5U9iGYianVakq2qM"
+            },
+            "href": "https://api.spotify.com/v1/albums/0DE8Ad5U9iGYianVakq2qM",
+            "id": "0DE8Ad5U9iGYianVakq2qM",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://i.scdn.co/image/ab67616d0000b27396b2a654dc9cd8de9645ebf0",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://i.scdn.co/image/ab67616d00001e0296b2a654dc9cd8de9645ebf0",
+                    "width": 300
+                },
+                {
+                    "height": 64,
+                    "url": "https://i.scdn.co/image/ab67616d0000485196b2a654dc9cd8de9645ebf0",
+                    "width": 64
+                }
+            ],
+            "name": "Show Me",
+            "release_date": "2019-08-27",
+            "release_date_precision": "day",
+            "total_tracks": 1,
+            "type": "album",
+            "uri": "spotify:album:0DE8Ad5U9iGYianVakq2qM"
+        },
+        "artists": [
+            {
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/artist/7nn5NpdRkUM4QiqegMSmEo"
+                },
+                "href": "https://api.spotify.com/v1/artists/7nn5NpdRkUM4QiqegMSmEo",
+                "id": "7nn5NpdRkUM4QiqegMSmEo",
+                "name": "Raider",
+                "type": "artist",
+                "uri": "spotify:artist:7nn5NpdRkUM4QiqegMSmEo"
+            },
+            {
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/artist/7LtYuMQ3wFY4fGX8Rvq6gD"
+                },
+                "href": "https://api.spotify.com/v1/artists/7LtYuMQ3wFY4fGX8Rvq6gD",
+                "id": "7LtYuMQ3wFY4fGX8Rvq6gD",
+                "name": "Annamarie Rosanio",
+                "type": "artist",
+                "uri": "spotify:artist:7LtYuMQ3wFY4fGX8Rvq6gD"
+            }
+        ],
+        "available_markets": [],
+        "disc_number": 1,
+        "duration_ms": 209500,
+        "explicit": false,
+        "external_ids": {
+            "isrc": "USA2P1941215"
+        },
+        "external_urls": {
+            "spotify": "https://open.spotify.com/track/5ndA5gOfgcgArbuYhMR3UI"
+        },
+        "href": "https://api.spotify.com/v1/tracks/5ndA5gOfgcgArbuYhMR3UI",
+        "id": "5ndA5gOfgcgArbuYhMR3UI",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Show Me",
+        "popularity": 36,
+        "preview_url": "https://p.scdn.co/mp3-preview/c47c6f27f72d4a944200dab63cff0b5df249290d?cid=7b45f66cbae54e518a9fb2e5717e6e6d",
+        "track_number": 1,
+        "type": "track",
+        "uri": "spotify:track:5ndA5gOfgcgArbuYhMR3UI"
+    },
+    "progress_ms": 203871,
+    "timestamp": 1605243482299
+}
