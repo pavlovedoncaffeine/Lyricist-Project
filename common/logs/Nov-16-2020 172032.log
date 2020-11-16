@@ -1,12 +1,9 @@
-#$PS 
-C:\Users\dkcac\Documents\Projects\Lyricist-Project> python .\common\pyThreadingTest.py
 Initializing...
-Fri Nov 13 00:01:01 2020 - Lyricist: Launching Spotify OAuth2.0 Service.
-Fri Nov 13 00:01:02 2020 - Lyricist: Spotify OAuth2.0 Server shutting down.
-
+2020-11-16  172032: Lyricist: Launching Spotify oAuth2 Authorization Service.
+2020-11-16  172033: Lyricist: Spotify oAuth2 Server shutting down
 {
     "actions": {
-        "disallows": {      
+        "disallows": {
             "resuming": true
         }
     },
@@ -22,17 +19,17 @@ Fri Nov 13 00:01:02 2020 - Lyricist: Spotify OAuth2.0 Server shutting down.
     "is_playing": true,
     "item": {
         "album": {
-            "album_type": "single",
+            "album_type": "album",
             "artists": [
                 {
                     "external_urls": {
-                        "spotify": "https://open.spotify.com/artist/7nn5NpdRkUM4QiqegMSmEo"
+                        "spotify": "https://open.spotify.com/artist/0SZ75AXPPX5NugN0yRJ7zt"
                     },
-                    "href": "https://api.spotify.com/v1/artists/7nn5NpdRkUM4QiqegMSmEo",
-                    "id": "7nn5NpdRkUM4QiqegMSmEo",
-                    "name": "Raider",
+                    "href": "https://api.spotify.com/v1/artists/0SZ75AXPPX5NugN0yRJ7zt",
+                    "id": "0SZ75AXPPX5NugN0yRJ7zt",
+                    "name": "Suna",
                     "type": "artist",
-                    "uri": "spotify:artist:7nn5NpdRkUM4QiqegMSmEo"
+                    "uri": "spotify:artist:0SZ75AXPPX5NugN0yRJ7zt"
                 }
             ],
             "available_markets": [
@@ -130,77 +127,77 @@ Fri Nov 13 00:01:02 2020 - Lyricist: Spotify OAuth2.0 Server shutting down.
                 "ZA"
             ],
             "external_urls": {
-                "spotify": "https://open.spotify.com/album/0DE8Ad5U9iGYianVakq2qM"
+                "spotify": "https://open.spotify.com/album/4UesKy5R8VARETcDW24RXG"
             },
-            "href": "https://api.spotify.com/v1/albums/0DE8Ad5U9iGYianVakq2qM",
-            "id": "0DE8Ad5U9iGYianVakq2qM",
+            "href": "https://api.spotify.com/v1/albums/4UesKy5R8VARETcDW24RXG",
+            "id": "4UesKy5R8VARETcDW24RXG",
             "images": [
                 {
                     "height": 640,
-                    "url": "https://i.scdn.co/image/ab67616d0000b27396b2a654dc9cd8de9645ebf0",
+                    "url": "https://i.scdn.co/image/ab67616d0000b27313599bd844613ee907f397cb",
                     "width": 640
                 },
                 {
                     "height": 300,
-                    "url": "https://i.scdn.co/image/ab67616d00001e0296b2a654dc9cd8de9645ebf0",
+                    "url": "https://i.scdn.co/image/ab67616d00001e0213599bd844613ee907f397cb",
                     "width": 300
                 },
                 {
                     "height": 64,
-                    "url": "https://i.scdn.co/image/ab67616d0000485196b2a654dc9cd8de9645ebf0",
+                    "url": "https://i.scdn.co/image/ab67616d0000485113599bd844613ee907f397cb",
                     "width": 64
                 }
             ],
-            "name": "Show Me",
-            "release_date": "2019-08-27",
+            "name": "Libre Service",
+            "release_date": "2019-03-22",
             "release_date_precision": "day",
-            "total_tracks": 1,
+            "total_tracks": 12,
             "type": "album",
-            "uri": "spotify:album:0DE8Ad5U9iGYianVakq2qM"
+            "uri": "spotify:album:4UesKy5R8VARETcDW24RXG"
         },
         "artists": [
             {
                 "external_urls": {
-                    "spotify": "https://open.spotify.com/artist/7nn5NpdRkUM4QiqegMSmEo"
+                    "spotify": "https://open.spotify.com/artist/0SZ75AXPPX5NugN0yRJ7zt"
                 },
-                "href": "https://api.spotify.com/v1/artists/7nn5NpdRkUM4QiqegMSmEo",
-                "id": "7nn5NpdRkUM4QiqegMSmEo",
-                "name": "Raider",
+                "href": "https://api.spotify.com/v1/artists/0SZ75AXPPX5NugN0yRJ7zt",
+                "id": "0SZ75AXPPX5NugN0yRJ7zt",
+                "name": "Suna",
                 "type": "artist",
-                "uri": "spotify:artist:7nn5NpdRkUM4QiqegMSmEo"
+                "uri": "spotify:artist:0SZ75AXPPX5NugN0yRJ7zt"
             },
             {
                 "external_urls": {
-                    "spotify": "https://open.spotify.com/artist/7LtYuMQ3wFY4fGX8Rvq6gD"
+                    "spotify": "https://open.spotify.com/artist/1I9HNoVK6kOQGVZfulXVnm"
                 },
-                "href": "https://api.spotify.com/v1/artists/7LtYuMQ3wFY4fGX8Rvq6gD",
-                "id": "7LtYuMQ3wFY4fGX8Rvq6gD",
-                "name": "Annamarie Rosanio",
+                "href": "https://api.spotify.com/v1/artists/1I9HNoVK6kOQGVZfulXVnm",
+                "id": "1I9HNoVK6kOQGVZfulXVnm",
+                "name": "TENDER",
                 "type": "artist",
-                "uri": "spotify:artist:7LtYuMQ3wFY4fGX8Rvq6gD"
+                "uri": "spotify:artist:1I9HNoVK6kOQGVZfulXVnm"
             }
         ],
         "available_markets": [],
         "disc_number": 1,
-        "duration_ms": 209500,
+        "duration_ms": 222280,
         "explicit": false,
         "external_ids": {
-            "isrc": "USA2P1941215"
+            "isrc": "FRX851801602"
         },
         "external_urls": {
-            "spotify": "https://open.spotify.com/track/5ndA5gOfgcgArbuYhMR3UI"
+            "spotify": "https://open.spotify.com/track/528cSfwLiCZ2kSNnk1tyAx"
         },
-        "href": "https://api.spotify.com/v1/tracks/5ndA5gOfgcgArbuYhMR3UI",
-        "id": "5ndA5gOfgcgArbuYhMR3UI",
+        "href": "https://api.spotify.com/v1/tracks/528cSfwLiCZ2kSNnk1tyAx",
+        "id": "528cSfwLiCZ2kSNnk1tyAx",
         "is_local": false,
         "is_playable": true,
-        "name": "Show Me",
-        "popularity": 36,
-        "preview_url": "https://p.scdn.co/mp3-preview/c47c6f27f72d4a944200dab63cff0b5df249290d?cid=7b45f66cbae54e518a9fb2e5717e6e6d",
-        "track_number": 1,
+        "name": "Un ptit bisou",
+        "popularity": 22,
+        "preview_url": "https://p.scdn.co/mp3-preview/d2db89b66e508c86d3910a1899a08c3adf2011fc?cid=7b45f66cbae54e518a9fb2e5717e6e6d",
+        "track_number": 4,
         "type": "track",
-        "uri": "spotify:track:5ndA5gOfgcgArbuYhMR3UI"
+        "uri": "spotify:track:528cSfwLiCZ2kSNnk1tyAx"
     },
-    "progress_ms": 203871,
-    "timestamp": 1605243482299
+    "progress_ms": 13968,
+    "timestamp": 1605565220325
 }
