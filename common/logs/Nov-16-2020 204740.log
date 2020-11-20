@@ -1,0 +1,193 @@
+Initializing...
+2020-11-16  204740: Lyricist: Launching Spotify oAuth2 Authorization Service.
+2020-11-16  204741: Lyricist: Spotify oAuth2 Server shutting down
+{
+    "actions": {
+        "disallows": {
+            "pausing": true
+        }
+    },
+    "context": {
+        "external_urls": {
+            "spotify": "https://open.spotify.com/playlist/7xB6mybJCHX92r3ZPS1FJ2"
+        },
+        "href": "https://api.spotify.com/v1/playlists/7xB6mybJCHX92r3ZPS1FJ2",
+        "type": "playlist",
+        "uri": "spotify:user:dk_krypton:playlist:7xB6mybJCHX92r3ZPS1FJ2"
+    },
+    "currently_playing_type": "track",
+    "is_playing": false,
+    "item": {
+        "album": {
+            "album_type": "single",
+            "artists": [
+                {
+                    "external_urls": {
+                        "spotify": "https://open.spotify.com/artist/5gvfdqgNxf85TaZmTAJm9b"
+                    },
+                    "href": "https://api.spotify.com/v1/artists/5gvfdqgNxf85TaZmTAJm9b",
+                    "id": "5gvfdqgNxf85TaZmTAJm9b",
+                    "name": "Theodor Ellefsen",
+                    "type": "artist",
+                    "uri": "spotify:artist:5gvfdqgNxf85TaZmTAJm9b"
+                }
+            ],
+            "available_markets": [
+                "AD",
+                "AE",
+                "AL",
+                "AR",
+                "AT",
+                "AU",
+                "BA",
+                "BE",
+                "BG",
+                "BH",
+                "BO",
+                "BR",
+                "BY",
+                "CA",
+                "CH",
+                "CL",
+                "CO",
+                "CR",
+                "CY",
+                "CZ",
+                "DE",
+                "DK",
+                "DO",
+                "DZ",
+                "EC",
+                "EE",
+                "EG",
+                "ES",
+                "FI",
+                "FR",
+                "GB",
+                "GR",
+                "GT",
+                "HK",
+                "HN",
+                "HR",
+                "HU",
+                "ID",
+                "IE",
+                "IL",
+                "IN",
+                "IS",
+                "IT",
+                "JO",
+                "JP",
+                "KW",
+                "KZ",
+                "LB",
+                "LI",
+                "LT",
+                "LU",
+                "LV",
+                "MA",
+                "MC",
+                "MD",
+                "ME",
+                "MK",
+                "MT",
+                "MX",
+                "MY",
+                "NI",
+                "NL",
+                "NO",
+                "NZ",
+                "OM",
+                "PA",
+                "PE",
+                "PH",
+                "PL",
+                "PS",
+                "PT",
+                "PY",
+                "QA",
+                "RO",
+                "RS",
+                "RU",
+                "SA",
+                "SE",
+                "SG",
+                "SI",
+                "SK",
+                "SV",
+                "TH",
+                "TN",
+                "TR",
+                "TW",
+                "UA",
+                "US",
+                "UY",
+                "VN",
+                "XK",
+                "ZA"
+            ],
+            "external_urls": {
+                "spotify": "https://open.spotify.com/album/1BNXyNMA0IjAkAyOyuYcHf"
+            },
+            "href": "https://api.spotify.com/v1/albums/1BNXyNMA0IjAkAyOyuYcHf",
+            "id": "1BNXyNMA0IjAkAyOyuYcHf",
+            "images": [
+                {
+                    "height": 640,
+                    "url": "https://i.scdn.co/image/ab67616d0000b2736df4a8707227ecfa17ea30d8",
+                    "width": 640
+                },
+                {
+                    "height": 300,
+                    "url": "https://i.scdn.co/image/ab67616d00001e026df4a8707227ecfa17ea30d8",
+                    "width": 300
+                },
+                {
+                    "height": 64,
+                    "url": "https://i.scdn.co/image/ab67616d000048516df4a8707227ecfa17ea30d8",
+                    "width": 64
+                }
+            ],
+            "name": "Howls Moving Castle",
+            "release_date": "2017-10-17",
+            "release_date_precision": "day",
+            "total_tracks": 1,
+            "type": "album",
+            "uri": "spotify:album:1BNXyNMA0IjAkAyOyuYcHf"
+        },
+        "artists": [
+            {
+                "external_urls": {
+                    "spotify": "https://open.spotify.com/artist/5gvfdqgNxf85TaZmTAJm9b"
+                },
+                "href": "https://api.spotify.com/v1/artists/5gvfdqgNxf85TaZmTAJm9b",
+                "id": "5gvfdqgNxf85TaZmTAJm9b",
+                "name": "Theodor Ellefsen",
+                "type": "artist",
+                "uri": "spotify:artist:5gvfdqgNxf85TaZmTAJm9b"
+            }
+        ],
+        "available_markets": [],
+        "disc_number": 1,
+        "duration_ms": 180797,
+        "explicit": false,
+        "external_ids": {
+            "isrc": "QZ9Y21747688"
+        },
+        "external_urls": {
+            "spotify": "https://open.spotify.com/track/4RuJg0U503z5GdLPzXj1c3"
+        },
+        "href": "https://api.spotify.com/v1/tracks/4RuJg0U503z5GdLPzXj1c3",
+        "id": "4RuJg0U503z5GdLPzXj1c3",
+        "is_local": false,
+        "is_playable": true,
+        "name": "Howls Moving Castle",
+        "popularity": 42,
+        "preview_url": "https://p.scdn.co/mp3-preview/7260b26979dbcd37c560f5d07e1fc8db5dd49e45?cid=7b45f66cbae54e518a9fb2e5717e6e6d",
+        "track_number": 1,
+        "type": "track",
+        "uri": "spotify:track:4RuJg0U503z5GdLPzXj1c3"
+    },
+    "progress_ms": 1036,
+    "timestamp": 1605577098550
+}
