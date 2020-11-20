@@ -18,36 +18,28 @@ from six.moves.BaseHTTPServer import HTTPServer
                                             # Could use some additional scope testing to see if any of them allow us to read the current track even in private mode
 #lyScope = None  #If the user chooses not to share Authorize Spotify to share data with Lyricist, we can attempt to progress with just the implicitly available information when the user is *not* in private-mode
 
-lyScope = None
-SPOTIFY_CLIENT_ID = None
-SPOTIFY_CLIENT_SECRET = None
-SPOTIFY_REDIRECT = None
+lyScope = 'user-read-currently-playing user-read-playback-position playlist-read-private'
+SPOTIFY_REDIRECT = "http://localhost:8888/callback/"
 
 secrets = os.path.join(os.getcwd(), "common", "lyricistSecrets.txt")
 with open(secrets, 'r') as secretsFile:
     if secretsFile is not None:
-        line = secretsFile.readline()
-        lyScope = line
+        line = '<starting_file_read>'
         while line:
             line = secretsFile.readline()
             words = line.split(' ')
             if words[0] == 'SPOTIFY_CLIENT_ID':
-                SPOTIFY_CLIENT_ID = words[1]
+                SPOTIFY_CLIENT_ID = words[1].strip()
             elif words[0] == 'SPOTIFY_CLIENT_SECRET':
-                SPOTIFY_CLIENT_SECRET = words[1]
-            elif words[0] == 'SPOTIFY_REDIRECT':
-                SPOTIFY_REDIRECT = words[1]
+                SPOTIFY_CLIENT_SECRET = words[1].strip()
     
-    
-
-
 LOGFILE = os.path.join(os.getcwd(), "common", "logs", genLogfileName())
 
 class localServerThread (threading.Thread):
     def __init__(self, server=None, name='Spotify OAuth2.0 Authentication Server'):
         threading.Thread.__init__(self)
         print ('Initializing...')
-        self.wyrdserver = server
+        self.server = server
         self.name = name
 
     def run(self):
@@ -61,7 +53,6 @@ def main():
         # Spotify OAuth2.0 to authorize the web API token systems
         oAuthServer = spotipy.oauth2.start_local_http_server(port=8888)
         oAuthThread = localServerThread(oAuthServer)
-
         try:
             try:
                 if oAuthThread is not None:
@@ -77,7 +68,6 @@ def main():
             oAuthServer.server_close()
             raise PermissionError(genTimestamp() + 'Lyricist: Spotify OAuth2.0 Server Initialization Aborted.')
             traceback.format()
-            #exit(13)
             
         finally:
             oAuthThread.join(1)
