@@ -20,6 +20,8 @@ from six.moves.BaseHTTPServer import HTTPServer
 
 lyScope = 'user-read-currently-playing user-read-playback-position playlist-read-private'
 SPOTIFY_REDIRECT = "http://localhost:8888/callback/"
+SPOTIFY_CLIENT_ID = None
+SPOTIFY_CLIENT_SECRET = None
 
 secrets = os.path.join(os.getcwd(), "common", "lyricistSecrets.txt")
 with open(secrets, 'r') as secretsFile:
