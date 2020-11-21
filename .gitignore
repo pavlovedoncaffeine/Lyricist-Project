@@ -1,4 +1,5 @@
 common/lyricistSecrets.txt
 common/logs/
+"common/logs/archived logs"
 .cache-dk_krypton
 *.log

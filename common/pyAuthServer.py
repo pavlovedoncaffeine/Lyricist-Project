@@ -52,23 +52,49 @@ class localServerThread (threading.Thread):
 def getTracksFromPlaylist(spLyr=None, plistID=None):
     queryResult = None
     index = 0
-    if spLyr is not None and plistID is not None:
-        queryResult = spLyr.playlist(plistID, fields='tracks(total)')
-        return queryResult
-        #spLyr.playlist_tracks(plistID, fields='items(track(name, artists(name),id,explicit,duration_ms))', offset=index)
-
-
-# def getLyrics(song=None, artist=None):
+    total = 0
     
+    try:
+        assert(spLyr is not None)
+        assert(plistID is not None)
+    except exc:
+        raise AssertionError("Invalid argument(s) to retrieve track list. Aborting operation.")
+        return None
+
+    queryResult = spLyr.playlist(plistID, fields='tracks(total)')
+    total = queryResult['tracks']['total']
+
+    trackList = []    
+    while index < total:
+        queryResult = spLyr.playlist_tracks(plistID, fields='items(track(name, artists(name),id,explicit,duration_ms))', offset=index)['items']
+        index += 100
+        for val in queryResult:
+            song = val["track"]
+            track = {}
+            track["name"] = song["name"]
+            track["artists"] = ', '.join([artist["name"] for artist in song["artists"]])
+            track["spotify_ID"] = song["id"]
+            track["explicit"] = song["explicit"]
+            track["duration_ms"] = song["duration_ms"]
+            trackList.append(track)
+
+    #print(json.dumps(trackList, indent=4))         # debugging
+    return trackList
+
+
+
+# To-do: November 21st, 2020 implement a rudimentary system to pull lyrics and write to file in the Data Folder.s
+# def getLyrics(song=None, artist=None):
+# return None    
 
 
 def main():
     
     with writeLog(open(LOGFILE, 'a')):
         
-        # Spotify OAuth2.0 to authorize the web API token systems
-        oAuthServer = spotipy.oauth2.start_local_http_server(port=8888)
+        oAuthServer = spotipy.oauth2.start_local_http_server(port=8888)     # Spotify OAuth2.0 to authorize the web API token systems
         oAuthThread = localServerThread(oAuthServer)
+        
         try:
             try:
                 if oAuthThread is not None:
@@ -92,11 +118,8 @@ def main():
             print (genTimestamp() + 'Lyricist: Spotify oAuth2 Server shutting down')
         
         spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET, redirect_uri=SPOTIFY_REDIRECT, state=None, scope=lyScope, username='dk_krypton', show_dialog=False))
-        #queryResult = spLyricist.currently_playing()      #query = spLyricist.user_playlist_is_following(playlist_id='7xB6mybJCHX92r3ZPS1FJ2', user_ids=['bluecan309'])
         
         if spLyricist is not None:
-            # Nov 20th, 2020: Adding in Lyrics web-scraper/azlyrics etc etc per user playlist
-            # queryResult = spLyricist.current_user_saved_tracks()
             queryResult = getTracksFromPlaylist(spLyricist, '6jviAN7MIgh36bLHEPI4DL')
             print(json.dumps(queryResult, indent=4))
             exit()
