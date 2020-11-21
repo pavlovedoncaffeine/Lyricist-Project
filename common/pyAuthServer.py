@@ -5,10 +5,10 @@ import os
 import sys, time, threading
 import six, requests, json
 import traceback
-from pyLogging import *
 import spotipy
+import azlyrics
 
-
+from pyLogging import *
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy.oauth2 import *
 from six.moves.BaseHTTPServer import HTTPServer
@@ -26,7 +26,7 @@ SPOTIFY_CLIENT_SECRET = None
 secrets = os.path.join(os.getcwd(), "common", "lyricistSecrets.txt")
 with open(secrets, 'r') as secretsFile:
     if secretsFile is not None:
-        line = '<starting_file_read>'
+        line = 'init'
         while line:
             line = secretsFile.readline()
             words = line.split(' ')
@@ -36,6 +36,7 @@ with open(secrets, 'r') as secretsFile:
                 SPOTIFY_CLIENT_SECRET = words[1].strip()
     
 LOGFILE = os.path.join(os.getcwd(), "common", "logs", genLogfileName())
+DATA_FOLDER = "E:\\Projects\\Lyricist\\Data\\"
 
 class localServerThread (threading.Thread):
     def __init__(self, server=None, name='Spotify OAuth2.0 Authentication Server'):
@@ -46,6 +47,19 @@ class localServerThread (threading.Thread):
 
     def run(self):
         self.server.serve_forever()
+
+
+def getTracksFromPlaylist(spLyr=None, plistID=None):
+    queryResult = None
+    index = 0
+    if spLyr is not None and plistID is not None:
+        queryResult = spLyr.playlist(plistID, fields='tracks(total)')
+        return queryResult
+        #spLyr.playlist_tracks(plistID, fields='items(track(name, artists(name),id,explicit,duration_ms))', offset=index)
+
+
+# def getLyrics(song=None, artist=None):
+    
 
 
 def main():
@@ -78,13 +92,16 @@ def main():
             print (genTimestamp() + 'Lyricist: Spotify oAuth2 Server shutting down')
         
         spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET, redirect_uri=SPOTIFY_REDIRECT, state=None, scope=lyScope, username='dk_krypton', show_dialog=False))
-        query = spLyricist.currently_playing()      #query = spLyricist.user_playlist_is_following(playlist_id='7xB6mybJCHX92r3ZPS1FJ2', user_ids=['bluecan309'])
+        #queryResult = spLyricist.currently_playing()      #query = spLyricist.user_playlist_is_following(playlist_id='7xB6mybJCHX92r3ZPS1FJ2', user_ids=['bluecan309'])
         
-        if spLyricist is not None and query is not None:
-            print (json.dumps(query, sort_keys=True, indent=4))
+        if spLyricist is not None:
+            # Nov 20th, 2020: Adding in Lyrics web-scraper/azlyrics etc etc per user playlist
+            # queryResult = spLyricist.current_user_saved_tracks()
+            queryResult = getTracksFromPlaylist(spLyricist, '6jviAN7MIgh36bLHEPI4DL')
+            print(json.dumps(queryResult, indent=4))
+            exit()
         else:
-            #print()
-            raise PermissionError(genTimestamp() + 'Lyricist: Could not retrieve current playback information. Please ensure that Spotify is in \'Private Mode\'')
+            raise PermissionError(genTimestamp() + 'Lyricist: Could not retrieve playlist.\nPlease ensure that Spotify is not in \'Private Mode\'')
 
 if __name__ == '__main__':
    main()
