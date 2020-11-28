@@ -3,3 +3,5 @@ common/logs/
 "common/logs/archived logs"
 .cache-dk_krypton
 *.log
+*.code-workspace
+Lyricist.code-workspace
