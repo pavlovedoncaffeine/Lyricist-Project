@@ -11,10 +11,10 @@ import json
 import traceback
 import pathlib
 import spotipy
+import azlyrics
 
-from azlyrics import songs, artists
-from common.pyLogging import *
-from common.lyricistSQL import *
+from pyLogging import *
+from lyricistSQL import *
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy.oauth2 import *
 from six.moves.BaseHTTPServer import HTTPServer
@@ -83,7 +83,7 @@ def getTracksFromPlaylist(spLyr=None, plistID=None):
         for val in queryResult:
             track = {}
             song = val["track"]
-            track["name"] = song["name"]
+            track["track_name"] = song["name"]
             track["artists"] = ", ".join(
                 [artist["name"] for artist in song["artists"]])
             track["album"] = song["album"]
@@ -93,7 +93,7 @@ def getTracksFromPlaylist(spLyr=None, plistID=None):
             track["has_lyrics"] = False
             track["is_explicit"] = song["explicit"]
             track["duration_ms"] = song["duration_ms"]
-            #track["is_cover"] = False
+            track["is_cover"] = None
             track["courtesy_of"] = None
             track["lyric_file"] = None
             trackList.append(track)
@@ -107,7 +107,7 @@ def saveLyrics(song=None, artists=None):
     if song is None or artists is None:
         return None
     artist = artists.split(", ")[0]
-    lyricsAZ = azlyrics.lyrics(song, artist)
+    lyricsAZ = azlyrics.lyrics(artist, song)
     if lyricsAZ is not None:  # if the lyrics are found, save it to a folder in "E:\Data\"
         artist_dir = os.path.join(DATA_FOLDER, artist)
         pathlib.Path(artist_dir).mkdir(parents=True, exist_ok=True)
@@ -164,14 +164,13 @@ def main():
 
         # IMP
         spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET,
-                                                               redirect_uri=SPOTIFY_REDIRECT, state=None, scope=lyScope, username='dk_krypton', show_dialog=False))
+                                                               redirect_uri=SPOTIFY_REDIRECT, state=None, scope=lyScope, username='dk_krypton', show_dialog=True))
 
         # IMP
         test_playlist = '6jviAN7MIgh36bLHEPI4DL'  # bring the house down : dk_krypton
 
         if spLyricist is not None:
             playlistTracks = getTracksFromPlaylist(spLyricist, test_playlist)
-
             # 1. for-each through list of tracks in playlist
             # 2. check if each track in playlist exists in database, and if it has lyrics
             # 3. if yes, return lyricFile from db's storage
@@ -179,18 +178,18 @@ def main():
             for track in playlistTracks:
                 # 1. SELECT track, artists from lyricist_tracks (lyricistDB.selectRow(self, track_name, artists)) # to be implemented
                 # (2.) + (3.) from above ^^
-
-                lyricsFile = saveLyrics(track['track_name'], track['artists'])
-                if lyricsFile is not None:
+                try:
+                    lyricsFile = saveLyrics(
+                        track['track_name'], track['artists'])
+                    assert(lyricsFile is not None)
                     track["has_lyrics"] = True
                     track["lyric_file"] = lyricsFile
                     track["courtesy_of"] = "azLyrics.com"
-                    # debugging: default value while working on adding more lyrics services
-                    try:
-                        assert(lyricistDB.insertTrackFromDict(track))
+                    assert(lyricistDB.insertTrackFromDict(track))
+                except:
+                    raise AssertionError(
+                        "Oops... check line 184 in pyAuthServer.py")
 
-                print(json.dumps(queryResult, indent=4))          # debugging
-                exit()                                            # debugging
         else:
             raise PermissionError(genTimestamp() +
                                   'Lyricist: Could not retrieve playlist.\nPlease ensure that Spotify is not in \'Private Mode\'')
