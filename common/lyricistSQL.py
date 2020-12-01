@@ -4,14 +4,15 @@ import traceback
 import mysql.connector
 from mysql.connector import errorcode
 
-# track_lyric JSON structure
+# JSON structure:
 # { 'track_name' : <String/varchar>,
 #   'artists'    : <String/varchar>,
+#   'album'      : <String/varchar>,
 #   'is_explicit': <Boolean>,
-#   'duration_ms': <int>,
+#   'duration_ms': <Int> UNSIGNED,
 #   'spotify_trackID': <String/varchar>,
-#   'apple_trackID': <String/varchar>,
-#   'bpm': <int>,
+#   'apple_trackID'  : <String/varchar>,
+#   'bpm'        : <Int> UNSIGNED,
 #   'is_cover'   : <Boolean>,
 #   'has_lyrics' : <Boolean>,
 #   'courtesy_of': <String/varchar>,
