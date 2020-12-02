@@ -64,7 +64,6 @@ def getTracksFromPlaylist(spLyr=None, plistID=None):
     queryResult = None
     index = 0
     total = 0
-
     try:
         assert(spLyr is not None)
         assert(plistID is not None)
@@ -74,7 +73,6 @@ def getTracksFromPlaylist(spLyr=None, plistID=None):
         return None
     queryResult = spLyr.playlist(plistID, fields='tracks(total)')
     total = queryResult['tracks']['total']
-
     trackList = []
     while index < total:
         queryResult = spLyr.playlist_tracks(
@@ -83,10 +81,25 @@ def getTracksFromPlaylist(spLyr=None, plistID=None):
         for val in queryResult:
             track = {}
             song = val["track"]
+            # track = {
+            #     'track_name': song["name"],
+            #     'artists': ", ".join([artist["name"] for artist in song["artists"]]),
+            #     'album': song["album"]["name"],
+            #     'spotify_trackID': song["id"],
+            #     'apple_trackID': None,
+            #     'bpm': None,
+            #     'has_lyrics': False,
+            #     'is_explicit': song["explicit"],
+            #     'duration_ms': song["duration_ms"],
+            #     'is_cover': None,
+            #     'courtesy_of': "azlyrics.com",  # default during dev-testing
+            #     'lyric_file': saveLyrics(song["name"], song["artists"]),
+            # }
+
             track["track_name"] = song["name"]
             track["artists"] = ", ".join(
-                [artist["name"] for artist in song["artists"]])
-            track["album"] = song["album"]
+                artist["name"] for artist in song["artists"])
+            track["album"] = song["album"]["name"]
             track["bpm"] = None
             track["spotify_trackID"] = song["id"]
             track["apple_trackID"] = None
@@ -107,14 +120,18 @@ def saveLyrics(song=None, artists=None):
     if song is None or artists is None:
         return None
 
-    invalid = '<>:"/\|?* '  # For Windows
+    invalid = '<>:"/\|?*'  # For Windows
     artist = artists.split(", ")[0]
 
     for char in invalid:
         song = song.replace(char, "")
         artist = artist.replace(char, "")
     lyricsAZ = azlyrics.lyrics(artist, song)
-    if lyricsAZ is not None:  # if the ly rics are found, save it to a folder in "E:\Data\"
+    if type(lyricsAZ) is dict:
+        print(json.dumps(lyricsAZ, indent=4))
+        raise Exception(
+            "Error encountered while fetching lyrics: \n" + lyricsAZ['Error'])
+    elif lyricsAZ is not None:  # if the ly rics are found, save it to a folder in "E:\Data\"
         artist_dir = os.path.join(DATA_FOLDER, artist)
         pathlib.Path(artist_dir).mkdir(parents=True, exist_ok=True)
         lyricsFilePath = os.path.join(artist_dir, song) + ".ly"
@@ -123,7 +140,7 @@ def saveLyrics(song=None, artists=None):
                 lyricsFile.write(song + " - " + artists + "\n")
                 for line in lyricsAZ:
                     lyricsFile.write(line)
-                lyricsFile.write("***")  # EOF indicator for lyricist?
+                lyricsFile.write("\n***\n")  # EOF indicator for lyricist?
             # print("Lyricist: Lyrics for:\n\t" + song + " - " + artists +
             #      "\nhave been saved in the following directory: " + artist_dir + "\n")
             return lyricsFilePath
@@ -146,8 +163,8 @@ def main():
         try:
             try:
                 if oAuthThread is not None:
-                    print(
-                        genTimestamp() + 'Lyricist: Launching Spotify OAuth2.0 Authorization Service.')
+                    print(genTimestamp() +
+                          'Lyricist: Launching Spotify OAuth2.0 Authorization Service.')
                     oAuthThread.start()
             except Exception as exc:
                 print(genTimestamp() +
@@ -168,22 +185,16 @@ def main():
             oAuthServer.server_close()
             print(genTimestamp() + 'Lyricist: Spotify OAuth2.0 Server shutting down')
 
-        # IMP
         spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET,
                                                                redirect_uri=SPOTIFY_REDIRECT, state=None, scope=lyScope, username='dk_krypton', show_dialog=True))
-
-        # IMP
         test_playlist = '6jviAN7MIgh36bLHEPI4DL'  # bring the house down : dk_krypton
-
         if spLyricist is not None:
             playlistTracks = getTracksFromPlaylist(spLyricist, test_playlist)
-            # 1. for-each through list of tracks in playlist
+            # 1. for-each through list of tracks in playlist # 1. SELECT track, artists from lyricist_tracks (lyricistDB.selectRow(self, track_name, artists)) # to be implemented
             # 2. check if each track in playlist exists in database, and if it has lyrics
             # 3. if yes, return lyricFile from db's storage
-            # 4. otherwise, run saveLyrics(song, artists)
+            # 4. (done) otherwise, run saveLyrics(song, artists)
             for track in playlistTracks:
-                # 1. SELECT track, artists from lyricist_tracks (lyricistDB.selectRow(self, track_name, artists)) # to be implemented
-                # (2.) + (3.) from above ^^
                 try:
                     lyricsFile = saveLyrics(
                         track['track_name'], track['artists'])
@@ -192,15 +203,18 @@ def main():
                         track["lyric_file"] = lyricsFile
                         track["courtesy_of"] = "azLyrics.com"
                         if lyrDB.insertTrackFromDict(track):
-                            print("Success. Data stored in lyricistDB!")
+                            print(track['track_name'] + " - " + track['artists'] +
+                                  ".\nLyricist: Successfully stored track details in database.")
                         else:
-                            print("Could not store in DB.")
+                            print("Lyricist: Could not store data in database.")
                 except AssertionError as exc:
                     print(traceback.format_exc())
-
         else:
             raise PermissionError(genTimestamp() +
                                   'Lyricist: Could not retrieve playlist.\nPlease ensure that Spotify is not in \'Private Mode\'')
+
+    lyrDB.cursor.close()
+    lyrDB.close()
 
 
 if __name__ == '__main__':
