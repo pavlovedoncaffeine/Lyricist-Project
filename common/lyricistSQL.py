@@ -1,6 +1,5 @@
 import os
 import traceback
-#from datetime import date, datetime
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -25,7 +24,6 @@ def select_file(track_name=None, artists=None):
 
 
 class lyricistDB:
-
     def __init__(self):
         self.lySQL = None
         self.cursor = None
@@ -33,12 +31,12 @@ class lyricistDB:
             self.lySQL = mysql.connector.connect(
                 user='pavlovedoncaffeine', password='C0mput3r!', host='127.0.0.1', port=3306, database='lyricist_schema')
             self.cursor = self.lySQL.cursor()
-        except mysql.connector.Error as exc:
-            if exc.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Lyricist: Error authorizing access to database.")
-            elif exc.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
                 print("Lyricist: Database not reachable.")
-            print(traceback.format_exc()+"\n")
+            print(traceback.format_exc())
 
     def updateTrack(self, track=None):
         if track is None:
@@ -52,7 +50,7 @@ class lyricistDB:
             else:
                 return False
         except:
-            print(traceback.format_exc()+"\n")
+            print(traceback.format_exc())
             return False
 
     def insertTrackFromDict(self, track=None):
@@ -68,7 +66,7 @@ class lyricistDB:
             else:
                 return False
         except:
-            print(traceback.format_exc()+"\n")
+            print(traceback.format_exc())
             return False
 
     def insertTrackDetails(self, track_name, artists, album=None, is_explicit=False, duration_ms=None, spotify_trackID=None, apple_trackID=None, is_cover=False, has_lyrics=False, courtesy_of=False, lyric_file=None):
@@ -84,7 +82,7 @@ class lyricistDB:
             else:
                 return False
         except:
-            print(traceback.format_exc()+"\n")
+            print(traceback.format_exc())
             return False
 
     def commitToDB(self):
@@ -92,5 +90,5 @@ class lyricistDB:
             self.lySQL.commit()
             return True
         except:
-            print(traceback.format_exc()+"\n")
+            print(traceback.format_exc())
             return False
