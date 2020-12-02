@@ -11,20 +11,14 @@ import json
 import traceback
 import pathlib
 import spotipy
-import azlyrics
-import pyLogging
-import lyricistSQL
 
-# from pyLogging import *
-# from lyricistSQL import *
+from azlyrics import *
+from lyricistSQL import *
+from pyLogging import *
+from six.moves.BaseHTTPServer import HTTPServer
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy.oauth2 import *
-from six.moves.BaseHTTPServer import HTTPServer
 
-# serverThreadExitCode = 0
-# lyScope = 'user-read-currently-playing'    #Doesn't allow access to what the user's listening to in private mode, and still requires authorization.
-# Could use some additional scope testing to see if any of them allow us to read the current track even in private mode
-# lyScope = None  #If the user chooses not to share Authorize Spotify to share data with Lyricist, we can attempt to progress with just the implicitly available information when the user is *not* in private-mode
 
 lyScope = 'user-read-currently-playing user-read-playback-position playlist-read-private'
 SPOTIFY_REDIRECT = "http://localhost:8888/callback/"
@@ -44,7 +38,7 @@ with open(secrets, 'r') as secretsFile:
                 SPOTIFY_CLIENT_SECRET = words[1].strip()
 
 LOGFILE = os.path.join(os.getcwd(), "common", "logs",
-                       pyLogging.genLogfileName())
+                       genLogfileName())
 DATA_FOLDER = "E:\\Projects\\Lyricist\\Data"
 lyrDB = lyricistSQL.lyricistDB()
 
@@ -121,19 +115,29 @@ def saveLyrics(song=None, artists=None):
     if song is None or artists is None:
         return None
     artist = artists.split(', ')[0]
-    print("\nArtist: " + artist + "\n")
-    # invalid = '<>:"|?*'  # For Windows
-    # for char in invalid:
-    #     if char in song:
-    #         song = song.replace(char, "")
-    #     if char in artist:
-    #         artist = artist.replace(char, "")
 
-    lyricsAZ = azlyrics.lyrics(artist, song)
+    # -----------------------------------------------------------------------------------------------------------------------------
+    # to correct for (feat. <artist #2>) or apostrophes or hyphens or parentheses that might affect the azlyrics data pull
+    invalid = '<>:"|?*\' '   # for Windows
+    invalid_phrases = ["feat", "(", ")", " - ", "-"]
+
+    for char in invalid:
+        if char in song:
+            song = song.replace(char, "")
+        if char in artist:
+            artist = artist.replace(char, "")
+    for phrase in invalid_phrases:
+        if phrase in song:
+            song = song[:song.find(phrase)]
+    # -----------------------------------------------------------------------------------------------------------------------------
+
+    lyricsAZ = lyrics(artist, song)  # azlyrics module function
+
     if type(lyricsAZ) is dict:
-        print(json.dumps(lyricsAZ, indent=4))
-        raise Exception(
-            "Error encountered while fetching lyrics: \n\t" + lyricsAZ['Error'])
+        print("Error encountered while fetching lyrics:\n" +
+              json.dumps(lyricsAZ, indent=4))
+        return False
+
     elif lyricsAZ is not None:  # if the lyrics are found, save it to a folder in "E:\Data\"
         artist_dir = os.path.join(DATA_FOLDER, artist)
         pathlib.Path(artist_dir).mkdir(parents=True, exist_ok=True)
@@ -144,20 +148,19 @@ def saveLyrics(song=None, artists=None):
                 for line in lyricsAZ:
                     lyricsFile.write(line)
                 lyricsFile.write("\n***\n")  # EOF indicator for lyricist?
-            # print("Lyricist: Lyrics for:\n\t" + song + " - " + artists +
-            #      "\nhave been saved in the following directory: " + artist_dir + "\n")
             return lyricsFilePath
         except FileExistsError as exc:
             print("Lyricist: Lyrics for:\n\t" + song + " - " + artists +
                   "\nalready exist in the following data folder: " + artist_dir + "\n")
             print(traceback.format_exc())
             return None
+
     else:
         return False  # debugging... still-to-implement: search other databases such as musixmatch and genius etc etc to generate lyrics files
 
 
 def main():
-    with pyLogging.writeLog(open(LOGFILE, 'a')):
+    with writeLog(open(LOGFILE, 'a')):
         # Spotify OAuth2.0 to authorize the web API token systems
         oAuthServer = spotipy.oauth2.start_local_http_server(port=8888)
         oAuthThread = localServerThread(oAuthServer)
@@ -165,11 +168,11 @@ def main():
         try:
             try:
                 if oAuthThread is not None:
-                    print(pyLogging.genTimestamp() +
+                    print(genTimestamp() +
                           'Lyricist: Launching Spotify OAuth2.0 Authorization Service.')
                     oAuthThread.start()
             except Exception as exc:
-                print(pyLogging.genTimestamp() +
+                print(genTimestamp() +
                       'Lyricist: Spotify OAuth2.0 Authorization Service could not be initialized.')
                 print(traceback.format_exc())
 
@@ -177,7 +180,7 @@ def main():
             oAuthThread.join(1)
             oAuthServer.shutdown()
             oAuthServer.server_close()
-            raise PermissionError(pyLogging.genTimestamp() +
+            raise PermissionError(genTimestamp() +
                                   'Lyricist: Spotify OAuth2.0 Server Initialization Aborted.')
             print(traceback.format_exc())
 
@@ -185,7 +188,7 @@ def main():
             oAuthThread.join(1)
             oAuthServer.shutdown()
             oAuthServer.server_close()
-            print(pyLogging.genTimestamp() +
+            print(genTimestamp() +
                   'Lyricist: Spotify OAuth2.0 Server shutting down')
 
         spLyricist = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET,
@@ -200,24 +203,29 @@ def main():
             # 3. if yes, return lyricFile from db's storage
             # 4. (done) otherwise, run saveLyrics(song, artists)
             for track in playlistTracks:
-                print("Testing...")
-                print(json.dumps(track, indent=4))
                 try:
                     lyricsFile = saveLyrics(
                         track["track_name"], track["artists"])
                     if lyricsFile is not None:
                         track["has_lyrics"] = True
                         track["lyric_file"] = lyricsFile
-                        #track["courtesy_of"] = "azLyrics.com"
+                        track["courtesy_of"] = "azLyrics.com"
                         if lyrDB.insertTrackFromDict(track):
                             print(track["track_name"] + " - " + track["artists"] +
                                   ".\nLyricist: Successfully stored track details in database.")
                         else:
                             print("Lyricist: Could not store data in database.")
-                except AssertionError as exc:
+
+                    # to-do: IMPLEMENT other lyrics services and pull data from them if azlyrics doesn't work. Also give the other services a shot to see what sort of metadata they're willing to part with in terms of lyrics syncing...
+                    elif lyricsFile is False:
+                        continue
+                    else:
+                        print("Error occured while saving lyric file to server.")
+
+                except Exception as exc:
                     print(traceback.format_exc())
         else:
-            raise PermissionError(pyLogging.genTimestamp() +
+            raise PermissionError(genTimestamp() +
                                   'Lyricist: Could not retrieve playlist.\nPlease ensure that Spotify is not in \'Private Mode\'')
 
     lyrDB.cursor.close()
