@@ -40,7 +40,7 @@ with open(secrets, 'r') as secretsFile:
 LOGFILE = os.path.join(os.getcwd(), "common", "logs",
                        genLogfileName())
 DATA_FOLDER = "E:\\Projects\\Lyricist\\Data"
-lyrDB = lyricistSQL.lyricistDB()
+lyrDB = lyricistDB()
 
 
 class localServerThread (threading.Thread):
