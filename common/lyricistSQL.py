@@ -32,8 +32,8 @@ class lyricistDB:
 
         try:
             self.lySQL = mysql.connector.connect(
-                user='pavlovedoncaffeine', password='C0mput3r!', host='127.0.0.1', port=3306, database='LyricistDB')
-            self.cursor = lySQL.cursor()
+                user='pavlovedoncaffeine', password='C0mput3r!', host='127.0.0.1', port=3306)  # , database='lyricist_schema')
+            self.cursor = self.lySQL.cursor()
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Error authorizing access to the Lyricist database.")
@@ -48,8 +48,10 @@ class lyricistDB:
             updateRow = ("UPDATE lyricist_tracks SET album = %s, is_explicit = %s, duration_ms = %s, spotify_trackID = %s, apple_trackID = %s, bpm = %s, is_cover = %s, has_lyrics = %s, courtesy_of = %s, lyric_file = %s "
                          "WHERE track_name = %s AND artists = %s")
             self.cursor.execute(updateRow, track)
-            assert(commitToDB())
-            return True
+            if self.commitToDB():
+                return True
+            else:
+                return False
         except:
             print(traceback.format_exc())
             return False
@@ -62,8 +64,10 @@ class lyricistDB:
                          "(track_name, artists, album, is_explicit, duration_ms, spotify_trackID, apple_trackID, bpm, is_cover, has_lyrics, courtesy_of, lyric_file) "
                          "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
             self.cursor.execute(insertRow, track)
-            assert(commitToDB())
-            return True
+            if self.commitToDB():
+                return True
+            else:
+                return False
         except:
             print(traceback.format_exc())
             return False
@@ -76,8 +80,10 @@ class lyricistDB:
             data = (track_name, artists, album, is_explicit, duration_ms, spotify_trackID,
                     apple_trackID, is_cover, has_lyrics, courtesy_of, lyric_file)
             self.cursor.execute(insertRow, data)
-            assert(commitToDB())
-            return True
+            if self.commitToDB():
+                return True
+            else:
+                return False
         except:
             print(traceback.format_exc())
             return False

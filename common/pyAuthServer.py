@@ -106,9 +106,15 @@ def getTracksFromPlaylist(spLyr=None, plistID=None):
 def saveLyrics(song=None, artists=None):
     if song is None or artists is None:
         return None
+
+    invalid = '<>:"/\|?* '  # For Windows
     artist = artists.split(", ")[0]
+
+    for char in invalid:
+        song = song.replace(char, "")
+        artist = artist.replace(char, "")
     lyricsAZ = azlyrics.lyrics(artist, song)
-    if lyricsAZ is not None:  # if the lyrics are found, save it to a folder in "E:\Data\"
+    if lyricsAZ is not None:  # if the ly rics are found, save it to a folder in "E:\Data\"
         artist_dir = os.path.join(DATA_FOLDER, artist)
         pathlib.Path(artist_dir).mkdir(parents=True, exist_ok=True)
         lyricsFilePath = os.path.join(artist_dir, song) + ".ly"
@@ -181,14 +187,16 @@ def main():
                 try:
                     lyricsFile = saveLyrics(
                         track['track_name'], track['artists'])
-                    assert(lyricsFile is not None)
-                    track["has_lyrics"] = True
-                    track["lyric_file"] = lyricsFile
-                    track["courtesy_of"] = "azLyrics.com"
-                    assert(lyricistDB.insertTrackFromDict(track))
-                except:
-                    raise AssertionError(
-                        "Oops... check line 184 in pyAuthServer.py")
+                    if lyricsFile is not None:
+                        track["has_lyrics"] = True
+                        track["lyric_file"] = lyricsFile
+                        track["courtesy_of"] = "azLyrics.com"
+                        if lyrDB.insertTrackFromDict(track):
+                            print("Success. Data stored in lyricistDB!")
+                        else:
+                            print("Could not store in DB.")
+                except AssertionError as exc:
+                    print(traceback.format_exc())
 
         else:
             raise PermissionError(genTimestamp() +
