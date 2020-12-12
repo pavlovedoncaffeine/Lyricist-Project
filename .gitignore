@@ -4,4 +4,4 @@ common/logs/
 .cache-dk_krypton
 *.log
 *.code-workspace
-Lyricist.code-workspace
+./Lyricist.code-workspace
