@@ -19,6 +19,10 @@ from six.moves.BaseHTTPServer import HTTPServer
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy.oauth2 import *
 
+# Genius API: py3 package "lyricsGenius": https://pypi.org/project/lyricsgenius/
+# Musixmatch python3 API: https://github.com/iannase/musixmatch-python-api
+# TO-DO Add Genius and Musixmatch API and keys to the lyricistSecrets.txt file.
+
 
 lyScope = 'user-read-currently-playing user-read-playback-position playlist-read-private'
 SPOTIFY_REDIRECT = "http://localhost:8888/callback/"
